@@ -40,9 +40,6 @@ entity NCO is
 end NCO;
 
 architecture STRUCTURAL of NCO is
-
-    -- !!! Se puede mejorar?
-    constant c_SQR_CMP: Std_Logic_Vector(g_ACC_WIDTH-1 downto 0) := (g_ACC_WIDTH-1 => '0', others => '1');
     
     ---- Components declaration ---
     component Accumulator is
@@ -111,7 +108,7 @@ begin --================= Architecture ==================--
     ---------------------------------
     w_SawtoothWave <= w_Phase;
     w_TriangleWave <= w_Phase;
-    w_SquareWave   <= (others => '0') when w_Phase < c_SQR_CMP else
+    w_SquareWave   <= (others => '0') when w_Phase(15) = '0' else
                       (others => '1');
     -- w_SineWave directly from ROM
     
