@@ -106,8 +106,8 @@ begin --================= Architecture ==================--
     ---------------------------------
     -- Waveform assignment
     ---------------------------------
-    w_SawtoothWave <= w_Phase;
-    w_TriangleWave <= w_Phase;
+    w_SawtoothWave <= w_Phase(g_ACC_WIDTH-1 downto g_ACC_WIDTH-16);
+    w_TriangleWave <= w_Phase(g_ACC_WIDTH-1 downto g_ACC_WIDTH-16);
     w_SquareWave   <= (others => '0') when w_Phase(15) = '0' else
                       (others => '1');
     -- w_SineWave directly from ROM
