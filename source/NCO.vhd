@@ -1,6 +1,6 @@
 -- =================== NUMERIC CONTROLLED OSCILLATOR =============================
 --
--- By agomez
+-- By agomezn
 -- 
 -- Create Date: 17.12.2020 18:55:05
 -- Design Name: 

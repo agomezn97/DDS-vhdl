@@ -52,14 +52,25 @@ architecture Behavioral of nco_tb is
             o_Wave:     out Std_Logic_Vector(15 downto 0));             -- Wave output
     end component;
 
-    signal sys_clk, reset, enable: Std_Logic := '0';
+    component NCA is
+        port (
+            i_Clk  : in  Std_Logic;
+            i_Wave : in  Std_Logic_Vector(15 downto 0);
+            i_Amp  : in  Std_Logic_Vector(7 downto 0);
+            --
+            o_Wave : out Std_Logic_Vector(15 downto 0)
+        );
+    end component;
+
+    signal sys_clk, enable: Std_Logic := '0';
     signal ftw_sig:        Std_Logic_Vector(N-1 downto 0);
     signal wv_select_sig:  Std_Logic_Vector(1 downto 0);          
-    signal output_sig:     Std_Logic_Vector(15 downto 0);
+    signal w_WaveOutNCO, w_WaveOut:     Std_Logic_Vector(15 downto 0);
+    signal w_Amp: Std_Logic_Vector(7 downto 0) := "11111111";
 
 begin
 
-    dut: nco
+    nco_1: nco
         generic map (g_ACC_WIDTH => N)
 
         port map (
@@ -68,7 +79,16 @@ begin
             i_FTW         => ftw_sig,
             i_WaveSelect  => wv_select_sig,
          
-            o_Wave      => output_sig
+            o_Wave      => w_WaveOutNCO
+        );
+
+    nca_1: NCA
+        port map(
+            i_Clk  => sys_clk,
+            i_Wave => w_WaveOutNCO,
+            i_Amp  => w_Amp,
+            --
+            o_Wave => w_WaveOut
         );
 
     -- Clock generation:
@@ -83,13 +103,21 @@ begin
     -- Stimulus
     stim: process
     begin
-        reset <= '1';
-        wait for 2*CLK_PERIOD;
-        reset <= '0';
+
         wv_select_sig <= "01";
         ftw_sig <= (4 => '1', others => '0');
         wait for CLK_PERIOD;
         enable <= '1';
+        wait for 100 us;
+        wv_select_sig <= "11";
+        wait for 100 us;
+        wv_select_sig <= "10";
+        wait for 100 us;
+        ftw_sig <= (5 => '1', others => '0');
+        wait for 100 us;
+        wv_select_sig <= "00";
+        wait for 100 us;
+        w_Amp <= "01000000";
         wait for 100 us;
         wv_select_sig <= "11";
         wait for 100 us;
