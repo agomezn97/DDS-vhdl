@@ -23,7 +23,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity Accumulator is
-    generic (g_WIDTH: Integer := 24);
+    generic (g_WIDTH: Natural);
     
     port (
         i_Clk    : in  Std_Logic;                                -- Clock signal 
