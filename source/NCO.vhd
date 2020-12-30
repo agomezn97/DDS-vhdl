@@ -68,10 +68,10 @@ architecture STRUCTURAL of NCO is
     signal w_Updown       : Std_Logic;
     signal w_LutEn        : Std_Logic;
     signal w_Phase        : Std_Logic_Vector(g_ACC_WIDTH-1 downto 0);
-    signal w_SineWave     : Std_Logic_Vector(15 downto 0);
-    signal w_SquareWave   : Std_Logic_Vector(15 downto 0);
-    signal w_SawtoothWave : Std_Logic_Vector(15 downto 0);
-    signal w_TriangleWave : Std_Logic_Vector(15 downto 0);
+    signal w_SineWave     : Signed(15 downto 0);
+    signal w_SquareWave   : Signed(15 downto 0);
+    signal w_SawtoothWave : Signed(15 downto 0);
+    signal w_TriangleWave : Signed(15 downto 0);
 
 begin --================= Architecture ==================--
     
@@ -106,20 +106,20 @@ begin --================= Architecture ==================--
     ---------------------------------
     -- Waveform assignment
     ---------------------------------
-    w_SawtoothWave <= w_Phase(g_ACC_WIDTH-1 downto g_ACC_WIDTH-16);
-    w_TriangleWave <= w_Phase(g_ACC_WIDTH-1 downto g_ACC_WIDTH-16);
-    w_SquareWave   <= (others => '0') when w_Phase(15) = '0' else
-                      (others => '1');
+    w_SawtoothWave <= Signed(w_Phase(g_ACC_WIDTH-1 downto g_ACC_WIDTH-16)) - 32768;
+    w_TriangleWave <= Signed(w_Phase(g_ACC_WIDTH-1 downto g_ACC_WIDTH-16)) - 32768;
+    w_SquareWave   <= (others => '1') when w_Phase(15) = '0' else
+                      (w_SquareWave'left => '0', others => '1');
     -- w_SineWave directly from ROM
     
     ----------------------------------
     -- Output mux
     ----------------------------------
     with i_WaveSelect select
-        o_Wave <= w_SineWave         when "00",
-                  w_SquareWave       when "01",
-                  w_SawtoothWave     when "10",
-                  w_TriangleWave     when "11",
+        o_Wave <= Std_Logic_Vector(w_SineWave)      when "00",
+                  Std_Logic_Vector(w_SquareWave)    when "01",
+                  Std_Logic_Vector(w_SawtoothWave)  when "10",
+                  Std_Logic_Vector(w_TriangleWave)  when "11",
                   (others => '0') when others;
 
 end STRUCTURAL;

@@ -109,7 +109,7 @@ begin
     begin
         if rising_edge(i_Clk) then
             if (i_En = '1') then
-                o_Data <= Std_Logic_Vector(to_Unsigned(t_ROM(to_Integer(Unsigned(i_Addr))),16));
+                o_Data <= Std_Logic_Vector(to_Signed((t_ROM(to_Integer(Unsigned(i_Addr)))-32768),16));
             end if;
         end if;
     end process SINC;

@@ -31,7 +31,7 @@ entity NCA is
         --
         o_Wave : out Std_Logic_Vector(15 downto 0)
     );
-end NCA ;
+end NCA;
 
 architecture arch of NCA is
 
