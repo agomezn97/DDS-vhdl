@@ -15,7 +15,7 @@
 -- Revision:
 -- Revision 0.01 - File Created
 -- Additional Comments:
--- 
+-- https://www.daycounter.com/Calculators/Sine-Generator-Calculator.phtml
 ----------------------------------------------------------------------------------
 
 
