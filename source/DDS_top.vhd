@@ -69,8 +69,8 @@ begin   --========================== ARCHITECTURE ==============================
         );
 
     -- Amplitude change
-    r_Mult <= ("00000000" & Signed(i_Amp)) * Signed(w_WaveNCO);
+    r_Mult <= to_Integer(Unsigned(i_Amp)) * Signed(w_WaveNCO);
     
-    o_Wave <= Std_Logic_Vector( r_Mult(31 downto 16) );
+    o_Wave <= Std_Logic_Vector( r_Mult(23 downto 8) );
 
 end architecture ; 

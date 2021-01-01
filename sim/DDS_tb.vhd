@@ -92,8 +92,10 @@ begin
         wait for 100 us;
         WaveSelect <= "11";
         wait for 100 us;
+        Amp <= "00100000";
         WaveSelect <= "10";
         wait for 100 us;
+        Amp <= "00000010";
         FTW <= (5 => '1', others => '0');
         wait for 100 us;
         WaveSelect <= "00";
