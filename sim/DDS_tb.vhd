@@ -1,35 +1,11 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 17.12.2020 20:52:04
--- Design Name: 
--- Module Name: nco_tb - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
+-- File: DDS_tb.vhd
+--
+-- Created by rtlogik
 ----------------------------------------------------------------------------------
-
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity DDS_tb is
 end DDS_tb;
@@ -84,32 +60,31 @@ begin
     -- Stimulus
     STIM: process
     begin
+        -- We modify:
+        -- WaveSelect -> to change the output wave
+        -- Amp        -> to change the amplitude
+        -- FTW        -> to change the frequency
 
-        WaveSelect <= "01";
-        FTW <= (4 => '1', others => '0');
+        WaveSelect <= "01";                
+        FTW <= (4 => '1', others => '0');   
         wait for CLK_PERIOD;
         Enable <= '1';
-        wait for 100 us;
-        WaveSelect <= "11";
-        wait for 100 us;
-        Amp <= "00100000";
-        WaveSelect <= "10";
-        wait for 100 us;
-        Amp <= "00000010";
-        FTW <= (5 => '1', others => '0');
-        wait for 100 us;
-        WaveSelect <= "00";
-        wait for 100 us;
-        Amp <= "01000000";
-        wait for 100 us;
-        WaveSelect <= "11";
-        wait for 100 us;
-        WaveSelect <= "10";
-        wait for 100 us;
-        FTW <= (5 => '1', others => '0');
-        wait for 100 us;
-        WaveSelect <= "00";
+        wait for 50 us;
         Amp <= "10000000";
+        wait for 50 us;
+        WaveSelect <= "10"; 
+        wait for 50 us;
+        FTW <= (5 => '1', others => '0');    
+        wait for 50 us;
+        WaveSelect <= "11";
+        wait for 50 us;
+        Amp <= "00100000";
+        wait for 50 us;
+        WaveSelect <= "00";
+        wait for 50 us;
+        Amp <= (others => '1');
+        wait for 50 us;
+        FTW <= (3 => '1', others => '0');
         wait for 100 us;
     end process;
 
