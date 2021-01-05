@@ -1,23 +1,13 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- File: SineLUT_ROM.vhd
 -- 
--- Create Date: 27.12.2020 12:46:08
--- Design Name: 
--- Module Name: SineLUT_ROM - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
+-- This design will infer a block RAM primitive in the synthesis process
+--
+-- The sine points were obtained with: 
 -- https://www.daycounter.com/Calculators/Sine-Generator-Calculator.phtml
+--
+-- Created by rtlogik
 ----------------------------------------------------------------------------------
-
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -25,17 +15,18 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity SineLUT_ROM is
     port (
-        i_Clk  : in Std_Logic;
-        i_En   : in Std_Logic;
-        i_Addr : in Std_Logic_Vector(9 downto 0);
+        i_Clk  : in Std_Logic;                          -- Clock signal
+        i_En   : in Std_Logic;                          -- Enable signal
+        i_Addr : in Std_Logic_Vector(9 downto 0);       -- Memory addres
         --
-        o_Data : out Std_Logic_Vector(15 downto 0)
+        o_Data : out Std_Logic_Vector(15 downto 0)      -- Output data
     );
 end SineLUT_ROM;
 
 architecture Behavioral of SineLUT_ROM is
 
-    type ROM is Array(1023 downto 0) of Integer range 0 to 65535;
+    type ROM is Array (1023 downto 0) of Integer range 0 to 65535;  -- 10x16bit ROM
+
     signal t_ROM : ROM := (  
         32768,32969,33170,33371,33572,33774,33975,34176,34377,34578,34779,34980,35180,35381,35582,35782,
         35982,36183,36383,36583,36782,36982,37182,37381,37580,37779,37978,38177,38375,38573,38771,38969,
@@ -109,7 +100,7 @@ begin
     begin
         if rising_edge(i_Clk) then
             if (i_En = '1') then
-                o_Data <= Std_Logic_Vector(to_Unsigned(t_ROM(to_Integer(Unsigned(i_Addr))),16));
+                o_Data <= Std_Logic_Vector(to_Signed((t_ROM(to_Integer(Unsigned(i_Addr)))-32768),16));
             end if;
         end if;
     end process SINC;
