@@ -26,7 +26,7 @@ architecture RTL of accumulator is
     signal w_Inc    : Unsigned(g_WIDTH-1 downto 0);              -- Increment for up mode
     signal w_Inc2   : Unsigned(g_WIDTH-1 downto 0);              -- Increment for up-down mode 
     signal w_Count  : Unsigned(g_WIDTH-1 downto 0);
-    signal w_Dir    : Std_Logic;
+    signal w_Dir    : Std_Logic;                                 -- To keep track of count direction
 
     signal r_Count  : Unsigned(g_WIDTH-1 downto 0) := (others => '0');
     signal r_Dir    : Std_Logic;
@@ -37,8 +37,7 @@ begin --======================== Architecture =========================--
     w_Inc2 <= Unsigned(i_FTW(g_WIDTH-2 downto 0) & '0');         -- Multiplication by 2 through left-shifting (FTW*2)
     
     --- Next-state logic ---
-    COMB: process (r_Count, w_Inc, w_Inc2)
-        --variable v_Dir: Std_Logic := '0';                        -- To keep track of count direction
+    COMB: process (r_Count, w_Inc, w_Inc2)                
     begin
     
         if (i_Updown = '0') then  
