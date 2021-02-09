@@ -26,8 +26,10 @@ architecture RTL of accumulator is
     signal w_Inc    : Unsigned(g_WIDTH-1 downto 0);              -- Increment for up mode
     signal w_Inc2   : Unsigned(g_WIDTH-1 downto 0);              -- Increment for up-down mode 
     signal w_Count  : Unsigned(g_WIDTH-1 downto 0);
+    signal w_Dir    : Std_Logic;
 
     signal r_Count  : Unsigned(g_WIDTH-1 downto 0) := (others => '0');
+    signal r_Dir    : Std_Logic;
 
 begin --======================== Architecture =========================--
 
@@ -36,11 +38,11 @@ begin --======================== Architecture =========================--
     
     --- Next-state logic ---
     COMB: process (r_Count, w_Inc, w_Inc2)
-        variable v_Dir: Std_Logic := '0';                        -- To keep track of count direction
+        --variable v_Dir: Std_Logic := '0';                        -- To keep track of count direction
     begin
     
         if (i_Updown = '0') then  
-            v_Dir := '0';
+            w_Dir <= '0';
             if r_Count < (c_MAX_COUNT - w_Inc) then              -- No overloading            
                 w_Count <= r_Count + w_Inc;
             else                                                 -- Overloading            
@@ -48,19 +50,21 @@ begin --======================== Architecture =========================--
             end if;
             
         elsif (i_Updown = '1') then 
-            if (v_Dir = '0') then    -- Up-count
+            if (r_Dir = '0') then    -- Up-count
                 if r_Count < (c_MAX_COUNT - w_Inc2) then         -- No overloading              
                     w_Count <= r_Count + w_Inc2;
+                    w_Dir <= '0';
                 else                                             -- Overloading                
                     w_Count <= c_MAX_COUNT - w_Inc2 - (c_MAX_COUNT - r_Count);
-                    v_Dir := '1';
+                    w_Dir <= '1';
                 end if;
-            elsif (v_Dir = '1') then  -- Down-count
+            elsif (r_Dir = '1') then  -- Down-count
                 if r_Count > w_Inc2 then                         -- No overloading                  
                     w_Count <= r_Count - w_Inc2;
+                    w_Dir <= '1';
                 else                                             -- Overloading                  
                     w_Count <= w_Inc2 - r_Count;
-                    v_Dir := '0';
+                    w_Dir <= '0';
                 end if;
             end if;
         end if;
@@ -73,6 +77,7 @@ begin --======================== Architecture =========================--
         if rising_edge(i_Clk) then
             if i_Enable = '1' then
                 r_Count <= w_Count;
+                r_Dir   <= w_Dir;
             else
                 r_Count <= (others => '0');
             end if;
