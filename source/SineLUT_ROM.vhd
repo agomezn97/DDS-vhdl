@@ -6,7 +6,7 @@
 -- The sine points were obtained with: 
 -- https://www.daycounter.com/Calculators/Sine-Generator-Calculator.phtml
 --
--- Created by rtlogik
+-- Created by emberity
 ----------------------------------------------------------------------------------
 
 library IEEE;
