@@ -4,7 +4,7 @@
 -- 
 -- DDS = Numeric Controlled Oscillator (NCO) + Amplitude control
 -- 
--- Created by rtlogik
+-- Created by emberity
 ----------------------------------------------------------------------------------
 
 library IEEE;
