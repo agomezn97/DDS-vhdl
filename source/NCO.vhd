@@ -5,7 +5,7 @@
 --               SineLUT_ROM.vhd
 -- 
 -- 
--- Created by rtlogik
+-- Created by emberity
 -- ===============================================================================
 
 library IEEE;
